@@ -461,7 +461,6 @@ extern GTY(()) tree cp_global_trees[CPTI_MAX];
       TYPENAME_IS_CLASS_P (in TYPENAME_TYPE)
       STMT_IS_FULL_EXPR_P (in _STMT)
       TARGET_EXPR_LIST_INIT_P (in TARGET_EXPR)
-      LAMBDA_EXPR_MUTABLE_P (in LAMBDA_EXPR)
       DECL_FINAL_P (in FUNCTION_DECL)
       QUALIFIED_NAME_IS_TEMPLATE (in SCOPE_REF)
       CONSTRUCTOR_IS_DEPENDENT (in CONSTRUCTOR)
@@ -523,6 +522,7 @@ extern GTY(()) tree cp_global_trees[CPTI_MAX];
       RANGE_FOR_IVDEP (in RANGE_FOR_STMT)
       CALL_EXPR_OPERATOR_SYNTAX (in CALL_EXPR, AGGR_INIT_EXPR)
       CONSTRUCTOR_IS_DESIGNATED_INIT (in CONSTRUCTOR)
+      OVL_NAME_INDEPENDENT_DECL_P (in OVERLOAD)
 
    Usage of TYPE_LANG_FLAG_?:
    0: TYPE_DEPENDENT_P
@@ -815,6 +815,9 @@ typedef struct ptrmem_cst * ptrmem_cst_t;
 #define OVL_LOOKUP_P(NODE)	TREE_LANG_FLAG_4 (OVERLOAD_CHECK (NODE))
 /* If set, this OVL_USING_P overload is exported.  */
 #define OVL_EXPORT_P(NODE)	TREE_LANG_FLAG_5 (OVERLOAD_CHECK (NODE))
+/* If set, this overload includes name-independent declarations.  */
+#define OVL_NAME_INDEPENDENT_DECL_P(NODE) \
+  TREE_LANG_FLAG_6 (OVERLOAD_CHECK (NODE))
 
 /* The first decl of an overload.  */
 #define OVL_FIRST(NODE)	ovl_first (NODE)
@@ -1234,7 +1237,7 @@ enum cp_identifier_kind {
   cik_simple_op = 4,	/* Non-assignment operator name.  */
   cik_assign_op = 5,	/* An assignment operator name.  */
   cik_conv_op = 6,	/* Conversion operator name.  */
-  cik_reserved_for_udlit = 7,	/* Not yet in use  */
+  cik_trait = 7,	/* Built-in trait name.  */
   cik_max
 };
 
@@ -1279,9 +1282,9 @@ enum cp_identifier_kind {
     & IDENTIFIER_KIND_BIT_0 (NODE))
 
 /* True if this identifier is for any operator name (including
-   conversions).  Value 4, 5, 6 or 7.  */
+   conversions).  Value 4, 5, or 6.  */
 #define IDENTIFIER_ANY_OP_P(NODE)		\
-  (IDENTIFIER_KIND_BIT_2 (NODE))
+  (IDENTIFIER_KIND_BIT_2 (NODE) && !IDENTIFIER_TRAIT_P (NODE))
 
 /* True if this identifier is for an overloaded operator. Values 4, 5.  */
 #define IDENTIFIER_OVL_OP_P(NODE)		\
@@ -1294,11 +1297,17 @@ enum cp_identifier_kind {
    & IDENTIFIER_KIND_BIT_0 (NODE))
 
 /* True if this identifier is the name of a type-conversion
-   operator.  Value 7.  */
+   operator.  Value 6.  */
 #define IDENTIFIER_CONV_OP_P(NODE)		\
   (IDENTIFIER_ANY_OP_P (NODE)			\
    & IDENTIFIER_KIND_BIT_1 (NODE)		\
    & (!IDENTIFIER_KIND_BIT_0 (NODE)))
+
+/* True if this identifier is the name of a built-in trait.  */
+#define IDENTIFIER_TRAIT_P(NODE)		\
+  (IDENTIFIER_KIND_BIT_0 (NODE)			\
+   & IDENTIFIER_KIND_BIT_1 (NODE)		\
+   & IDENTIFIER_KIND_BIT_2 (NODE))
 
 /* True if this identifier is a new or delete operator.  */
 #define IDENTIFIER_NEWDEL_OP_P(NODE)		\
@@ -1383,15 +1392,25 @@ struct GTY (()) tree_argument_pack_select {
   int index;
 };
 
-/* The different kinds of traits that we encounter.  */
-
-enum cp_trait_kind
-{
+/* The different kinds of traits that we encounter.  The size is limited to
+   addr_space_t since a trait is looked up by IDENTIFIER_CP_INDEX.  */
+enum cp_trait_kind : addr_space_t {
 #define DEFTRAIT(TCC, CODE, NAME, ARITY) \
   CPTK_##CODE,
 #include "cp-trait.def"
 #undef DEFTRAIT
 };
+
+/* The trait type.  */
+struct cp_trait {
+  const char *name;
+  cp_trait_kind kind;
+  short arity;
+  bool type;
+};
+
+/* The trait table indexed by cp_trait_kind.  */
+extern const struct cp_trait cp_traits[];
 
 /* The types that we are processing.  */
 #define TRAIT_EXPR_TYPE1(NODE) \
@@ -1477,10 +1496,6 @@ enum cp_lambda_default_capture_mode_type {
 /* Predicate tracking whether `this' is in the effective capture set.  */
 #define LAMBDA_EXPR_CAPTURES_THIS_P(NODE) \
   LAMBDA_EXPR_THIS_CAPTURE(NODE)
-
-/* Predicate tracking whether the lambda was declared 'mutable'.  */
-#define LAMBDA_EXPR_MUTABLE_P(NODE) \
-  TREE_LANG_FLAG_1 (LAMBDA_EXPR_CHECK (NODE))
 
 /* True iff uses of a const variable capture were optimized away.  */
 #define LAMBDA_EXPR_CAPTURE_OPTIMIZED(NODE) \
@@ -2947,8 +2962,9 @@ struct GTY(()) lang_decl_fn {
   unsigned maybe_deleted : 1;
   unsigned coroutine_p : 1;
   unsigned implicit_constexpr : 1;
+  unsigned escalated_p : 1;
 
-  unsigned spare : 9;
+  unsigned spare : 8;
 
   /* 32-bits padding on 64-bit host.  */
 
@@ -3400,6 +3416,14 @@ struct GTY(()) lang_decl {
 #define DECL_MAYBE_DELETED(NODE) \
   (LANG_DECL_FN_CHECK (NODE)->maybe_deleted)
 
+/* Nonzero for FUNCTION_DECL means that this function's body has been
+   checked for immediate-escalating expressions and maybe promoted.  It
+   does *not* mean the function is consteval.  It must not be set in
+   a function that was marked consteval by the user, so that we can
+   distinguish between explicitly consteval functions and promoted consteval
+   functions.  */
+#define DECL_ESCALATION_CHECKED_P(NODE) (LANG_DECL_FN_CHECK (NODE)->escalated_p)
+
 /* True (in a FUNCTION_DECL) if NODE is a virtual function that is an
    invalid overrider for a function from a base class.  Once we have
    complained about an invalid overrider we avoid complaining about it
@@ -3799,6 +3823,12 @@ struct GTY(()) lang_decl {
   ? int_cst_value (NON_DEFAULT_TEMPLATE_ARGS_COUNT (NODE)) \
   : TREE_VEC_LENGTH (INNERMOST_TEMPLATE_ARGS (NODE))
 #endif
+
+/* True iff NODE represents the template args for a type-constraint,
+   in which case the first one represents the constrained type.
+   Currently only set during mangling.  */
+#define TEMPLATE_ARGS_TYPE_CONSTRAINT_P(NODE) \
+  TREE_PRIVATE (TREE_VEC_CHECK (NODE))
 
 /* The list of access checks that were deferred during parsing
    which need to be performed at template instantiation time.
@@ -5877,7 +5907,8 @@ extern GTY(()) vec<tree, va_gc> *keyed_classes;
 
 
 /* Nonzero if we're done parsing and into end-of-file activities.
-   Two if we're done with front-end processing.  */
+   2 if all templates have been instantiated.
+   3 if we're done with front-end processing.  */
 
 extern int at_eof;
 
@@ -6769,6 +6800,7 @@ extern tree perform_direct_initialization_if_possible (tree, tree, bool,
 extern vec<tree,va_gc> *resolve_args (vec<tree,va_gc>*, tsubst_flags_t);
 extern tree in_charge_arg_for_name		(tree);
 extern bool in_immediate_context		();
+extern bool immediate_invocation_p		(tree);
 extern tree build_cxx_call			(tree, int, tree *,
 						 tsubst_flags_t,
 						 tree = NULL_TREE);
@@ -6979,6 +7011,7 @@ extern tree lookup_enumerator			(tree, tree);
 extern bool start_preparsed_function		(tree, tree, int);
 extern bool start_function			(cp_decl_specifier_seq *,
 						 const cp_declarator *, tree);
+extern tree maybe_prepare_return_this		(tree);
 extern void maybe_return_this			(void);
 extern tree begin_function_body			(void);
 extern void finish_function_body		(tree);
@@ -7371,7 +7404,7 @@ extern bool maybe_clone_body			(tree);
 
 /* In parser.cc */
 extern tree cp_convert_range_for (tree, tree, tree, cp_decomp *, bool,
-				  unsigned short, bool);
+				  tree, bool);
 extern void cp_convert_omp_range_for (tree &, tree &, tree &,
 				      tree &, tree &, tree &, tree &, tree &);
 extern void cp_finish_omp_range_for (tree, tree);
@@ -7457,7 +7490,7 @@ extern tree fn_type_unification			(tree, tree, tree,
 						 bool, bool);
 extern void mark_decl_instantiated		(tree, int);
 extern int more_specialized_fn			(tree, tree, int);
-extern bool type_targs_deducible_from		(tree, tree);
+extern tree type_targs_deducible_from		(tree, tree);
 extern void do_decl_instantiation		(tree, tree);
 extern void do_type_instantiation		(tree, tree, tsubst_flags_t);
 extern bool always_instantiate_p		(tree);
@@ -7692,19 +7725,16 @@ extern void begin_else_clause			(tree);
 extern void finish_else_clause			(tree);
 extern void finish_if_stmt			(tree);
 extern tree begin_while_stmt			(void);
-extern void finish_while_stmt_cond	(tree, tree, bool, unsigned short,
-					 bool);
+extern void finish_while_stmt_cond	(tree, tree, bool, tree, bool);
 extern void finish_while_stmt			(tree);
 extern tree begin_do_stmt			(void);
 extern void finish_do_body			(tree);
-extern void finish_do_stmt		(tree, tree, bool, unsigned short,
-					 bool);
+extern void finish_do_stmt		(tree, tree, bool, tree, bool);
 extern tree finish_return_stmt			(tree);
 extern tree begin_for_scope			(tree *);
 extern tree begin_for_stmt			(tree, tree);
 extern void finish_init_stmt			(tree);
-extern void finish_for_cond		(tree, tree, bool, unsigned short,
-					 bool);
+extern void finish_for_cond		(tree, tree, bool, tree, bool);
 extern void finish_for_expr			(tree, tree);
 extern void finish_for_stmt			(tree);
 extern tree begin_range_for_stmt		(tree, tree);
@@ -7863,7 +7893,7 @@ extern tree lambda_capture_field_type		(tree, bool, bool);
 extern tree lambda_proxy_type			(tree);
 extern tree lambda_function			(tree);
 extern void apply_deduced_return_type           (tree, tree);
-extern tree add_capture                         (tree, tree, tree, bool, bool);
+extern tree add_capture                         (tree, tree, tree, bool, bool, unsigned *);
 extern tree add_default_capture                 (tree, tree, tree);
 extern void insert_capture_proxy		(tree);
 extern void insert_pending_capture_proxies	(void);
@@ -7904,6 +7934,7 @@ extern tree most_general_lambda			(tree);
 extern tree finish_omp_target			(location_t, tree, tree, bool);
 extern void finish_omp_target_clauses		(location_t, tree, tree *);
 extern void maybe_warn_unparenthesized_assignment (tree, tsubst_flags_t);
+extern tree cp_check_pragma_unroll		(location_t, tree);
 
 /* in tree.cc */
 extern int cp_tree_operand_length		(const_tree);
@@ -8028,7 +8059,8 @@ extern tree maybe_dummy_object			(tree, tree *);
 extern bool is_dummy_object			(const_tree);
 extern bool is_byte_access_type			(tree);
 extern bool is_byte_access_type_not_plain_char	(tree);
-extern const struct attribute_spec cxx_attribute_table[];
+extern const struct scoped_attribute_specs cxx_gnu_attribute_table;
+extern const struct scoped_attribute_specs std_attribute_table;
 extern tree make_ptrmem_cst			(tree, tree);
 extern tree cp_build_type_attribute_variant     (tree, tree);
 extern tree cp_build_reference_type		(tree, bool);
@@ -8067,7 +8099,7 @@ extern void cxx_print_type			(FILE *, tree, int);
 extern void cxx_print_identifier		(FILE *, tree, int);
 extern void cxx_print_error_function		(diagnostic_context *,
 						 const char *,
-						 struct diagnostic_info *);
+						 const diagnostic_info *);
 
 /* in typeck.cc */
 /* Says how we should behave when comparing two arrays one of which
@@ -8411,7 +8443,9 @@ extern tree process_stmt_assume_attribute	(tree, tree, location_t);
 extern bool simple_empty_class_p		(tree, tree, tree_code);
 extern tree fold_builtin_source_location	(const_tree);
 extern tree get_source_location_impl_type	();
-extern bool cp_fold_immediate			(tree *, mce_value);
+extern tree cp_fold_immediate			(tree *, mce_value,
+						 tree = current_function_decl);
+extern void process_and_check_pending_immediate_escalating_fns ();
 
 /* in name-lookup.cc */
 extern tree strip_using_decl                    (tree);
@@ -8509,6 +8543,7 @@ struct processing_constraint_expression_sentinel
 extern bool processing_constraint_expression_p	();
 
 extern tree unpack_concept_check		(tree);
+extern tree get_concept_check_template		(tree);
 extern tree evaluate_concept_check              (tree);
 extern bool constraints_satisfied_p		(tree, tree = NULL_TREE);
 extern bool* lookup_subsumption_result          (tree, tree);
@@ -8927,6 +8962,18 @@ extended_float_type_p (tree type)
   if (type == bfloat16_type_node)
     return true;
   return false;
+}
+
+/* True if DECL is name-independent declaration.  */
+
+inline bool
+name_independent_decl_p (tree decl)
+{
+  return ((VAR_P (decl) || TREE_CODE (decl) == FIELD_DECL)
+	  && DECL_NAME (decl)
+	  && id_equal (DECL_NAME (decl), "_")
+	  && !TREE_STATIC (decl)
+	  && !DECL_EXTERNAL (decl));
 }
 
 #if CHECKING_P
