@@ -9,7 +9,7 @@
 BASEVER, DATESTAMP, DEVPHASE, and REVISION are defined by the
 Makefile.  */
 
-#define version_string "14.0.0 20231214 (Bleeding Edge)"
+#define version_string "14.0.0 20231216 (Bleeding Edge)"
 #define pkgversion_string "(Atiga GCC) "
 
 /* This is the location of the online document giving instructions for
