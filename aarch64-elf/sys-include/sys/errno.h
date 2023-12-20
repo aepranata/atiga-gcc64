@@ -1,1 +1,1 @@
-#include <errno.h>
+../x86_64-linux-gnu/sys/errno.h
