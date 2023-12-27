@@ -1,1 +1,1 @@
-#include <fcntl.h>
+../x86_64-linux-gnu/sys/fcntl.h

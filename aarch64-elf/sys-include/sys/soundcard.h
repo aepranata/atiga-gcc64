@@ -1,1 +1,1 @@
-#include <linux/soundcard.h>
+../x86_64-linux-gnu/sys/soundcard.h
