@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "AS 1"
-.TH AS 1 "2024-01-07" "binutils-2.41.50" "GNU Development Tools"
+.TH AS 1 "2024-01-14" "binutils-2.41.50" "GNU Development Tools"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -719,7 +719,7 @@ suffix.
 .IP "\fB\-\-gdwarf\-cie\-version=\fR\fIversion\fR" 4
 .IX Item "--gdwarf-cie-version=version"
 Control which version of \s-1DWARF\s0 Common Information Entries (CIEs) are produced.
-When this flag is not specificed the default is version 1, though some targets
+When this flag is not specified the default is version 1, though some targets
 can modify this default.  Other possible values for \fIversion\fR are 3 or 4.
 .IP "\fB\-\-generate\-missing\-build\-notes=yes\fR" 4
 .IX Item "--generate-missing-build-notes=yes"
@@ -3030,9 +3030,9 @@ are recognized:
 \&\f(CW\*(C`z80n\*(C'\fR,
 \&\f(CW\*(C`r800\*(C'\fR.
 In addition to the basic instruction set, the assembler can be told to
-accept some extention mnemonics. For example,
+accept some extension mnemonics. For example,
 \&\f(CW\*(C`\-march=z180+sli+infc\*(C'\fR extends \fIz180\fR with \fI\s-1SLI\s0\fR instructions and
-\&\fI\s-1IN F,\s0(C)\fR. The following extentions are currently supported:
+\&\fI\s-1IN F,\s0(C)\fR. The following extensions are currently supported:
 \&\f(CW\*(C`full\*(C'\fR (all known instructions),
 \&\f(CW\*(C`adl\*(C'\fR (\s-1ADL CPU\s0 mode by default, eZ80 only),
 \&\f(CW\*(C`sli\*(C'\fR (instruction known as \fI\s-1SLI\s0\fR, \fI\s-1SLL\s0\fR or \fI\s-1SL1\s0\fR),
@@ -3041,9 +3041,9 @@ accept some extention mnemonics. For example,
 \&\f(CW\*(C`xdcb\*(C'\fR (instructions like \fIRotOp (II+d),R\fR and \fIBitOp n,(II+d),R\fR),
 \&\f(CW\*(C`infc\*(C'\fR (instruction \fI\s-1IN F,\s0(C)\fR or \fI\s-1IN\s0 (C)\fR),
 \&\f(CW\*(C`outc0\*(C'\fR (instruction \fI\s-1OUT\s0 (C),0\fR).
-Note that rather than extending a basic instruction set, the extention
+Note that rather than extending a basic instruction set, the extension
 mnemonics starting with \f(CW\*(C`\-\*(C'\fR revoke the respective functionality:
-\&\f(CW\*(C`\-march=z80\-full+xyhl\*(C'\fR first removes all default extentions and adds
+\&\f(CW\*(C`\-march=z80\-full+xyhl\*(C'\fR first removes all default extensions and adds
 support for index registers halves only.
 .Sp
 If this option is not specified then \f(CW\*(C`\-march=z80+xyhl+infc\*(C'\fR is assumed.
