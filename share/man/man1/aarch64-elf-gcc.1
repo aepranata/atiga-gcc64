@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2024-01-14" "gcc-14.0.1" "GNU"
+.TH GCC 1 "2024-01-28" "gcc-14.0.1" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -236,7 +236,7 @@ in the following sections.
 \&\fB\-fopenmp  \-fopenmp\-simd  \-fopenmp\-target\-simd\-clone\fR[\fB=\fR\fIdevice-type\fR]
 \&\fB\-fpermitted\-flt\-eval\-methods=\fR\fIstandard\fR
 \&\fB\-fplan9\-extensions  \-fsigned\-bitfields  \-funsigned\-bitfields
-\&\-fsigned\-char  \-funsigned\-char \-fstrict\-flex\-arrays[=\fR\fIn\fR\fB]
+\&\-fsigned\-char  \-funsigned\-char  \-fstrict\-flex\-arrays[=\fR\fIn\fR\fB]
 \&\-fsso\-struct=\fR\fIendianness\fR
 .IP "\fI\*(C+ Language Options\fR" 4
 .IX Item " Language Options"
@@ -299,8 +299,7 @@ in the following sections.
 \&\-Woverloaded\-virtual  \-Wno\-pmf\-conversions \-Wself\-move \-Wsign\-promo
 \&\-Wsized\-deallocation  \-Wsuggest\-final\-methods
 \&\-Wsuggest\-final\-types  \-Wsuggest\-override
-\&\-Wno\-terminate  \-Wuseless\-cast  \-Wno\-vexing\-parse
-\&\-Wvirtual\-inheritance
+\&\-Wno\-terminate  \-Wno\-vexing\-parse  \-Wvirtual\-inheritance
 \&\-Wno\-virtual\-move\-assign  \-Wvolatile  \-Wzero\-as\-null\-pointer\-constant\fR
 .IP "\fIObjective-C and Objective\-\*(C+ Language Options\fR" 4
 .IX Item "Objective-C and Objective- Language Options"
@@ -357,7 +356,8 @@ in the following sections.
 \&\fB\-Wno\-aggressive\-loop\-optimizations
 \&\-Warith\-conversion
 \&\-Warray\-bounds  \-Warray\-bounds=\fR\fIn\fR  \fB\-Warray\-compare
-\&\-Wno\-attributes  \-Wattribute\-alias=\fR\fIn\fR \fB\-Wno\-attribute\-alias
+\&\-Warray\-parameter  \-Warray\-parameter=\fR\fIn\fR
+\&\fB\-Wno\-attributes  \-Wattribute\-alias=\fR\fIn\fR \fB\-Wno\-attribute\-alias
 \&\-Wno\-attribute\-warning
 \&\-Wbidi\-chars=\fR[\fBnone\fR|\fBunpaired\fR|\fBany\fR|\fBucn\fR]
 \&\fB\-Wbool\-compare  \-Wbool\-operation
@@ -430,12 +430,12 @@ in the following sections.
 \&\-Wstrict\-aliasing=n  \-Wstrict\-overflow  \-Wstrict\-overflow=\fR\fIn\fR
 \&\fB\-Wstring\-compare
 \&\-Wno\-stringop\-overflow \-Wno\-stringop\-overread
-\&\-Wno\-stringop\-truncation \-Wstrict\-flex\-arrays
+\&\-Wno\-stringop\-truncation  \-Wstrict\-flex\-arrays
 \&\-Wsuggest\-attribute=\fR[\fBpure\fR|\fBconst\fR|\fBnoreturn\fR|\fBformat\fR|\fBmalloc\fR]
 \&\fB\-Wswitch  \-Wno\-switch\-bool  \-Wswitch\-default  \-Wswitch\-enum
 \&\-Wno\-switch\-outside\-range  \-Wno\-switch\-unreachable  \-Wsync\-nand
 \&\-Wsystem\-headers  \-Wtautological\-compare  \-Wtrampolines  \-Wtrigraphs
-\&\-Wtrivial\-auto\-var\-init \-Wtsan \-Wtype\-limits  \-Wundef
+\&\-Wtrivial\-auto\-var\-init  \-Wno\-tsan  \-Wtype\-limits  \-Wundef
 \&\-Wuninitialized  \-Wunknown\-pragmas
 \&\-Wunsuffixed\-float\-constants  \-Wunused
 \&\-Wunused\-but\-set\-parameter  \-Wunused\-but\-set\-variable
@@ -444,11 +444,12 @@ in the following sections.
 \&\-Wunused\-macros
 \&\-Wunused\-parameter  \-Wno\-unused\-result
 \&\-Wunused\-value  \-Wunused\-variable
+\&\-Wuse\-after\-free  \-Wuse\-after\-free=\fR\fIn\fR  \fB\-Wuseless\-cast
 \&\-Wno\-varargs  \-Wvariadic\-macros
 \&\-Wvector\-operation\-performance
 \&\-Wvla  \-Wvla\-larger\-than=\fR\fIbyte-size\fR  \fB\-Wno\-vla\-larger\-than
 \&\-Wvolatile\-register\-var  \-Wwrite\-strings
-\&\-Wxor\-used\-as\-pow
+\&\-Wno\-xor\-used\-as\-pow
 \&\-Wzero\-length\-bounds\fR
 .IP "\fIStatic Analyzer Options\fR" 4
 .IX Item "Static Analyzer Options"
@@ -566,6 +567,7 @@ in the following sections.
 \&\-falign\-jumps[=\fR\fIn\fR\fB[:\fR\fIm\fR\fB:[\fR\fIn2\fR\fB[:\fR\fIm2\fR\fB]]]]
 \&\-falign\-labels[=\fR\fIn\fR\fB[:\fR\fIm\fR\fB:[\fR\fIn2\fR\fB[:\fR\fIm2\fR\fB]]]]
 \&\-falign\-loops[=\fR\fIn\fR\fB[:\fR\fIm\fR\fB:[\fR\fIn2\fR\fB[:\fR\fIm2\fR\fB]]]]
+\&\-fmin\-function\-alignment=[\fR\fIn\fR\fB]
 \&\-fno\-allocation\-dce \-fallow\-store\-data\-races
 \&\-fassociative\-math  \-fauto\-profile  \-fauto\-profile[=\fR\fIpath\fR\fB]
 \&\-fauto\-inc\-dec  \-fbranch\-probabilities
@@ -891,12 +893,12 @@ in the following sections.
 \&\fI\s-1AVR\s0 Options\fR
 \&\fB\-mmcu=\fR\fImcu\fR  \fB\-mabsdata  \-maccumulate\-args
 \&\-mbranch\-cost=\fR\fIcost\fR
-\&\fB\-mcall\-prologues  \-mgas\-isr\-prologues  \-mint8
-\&\-mdouble=\fR\fIbits\fR \fB\-mlong\-double=\fR\fIbits\fR
+\&\fB\-mcall\-prologues  \-mgas\-isr\-prologues  \-mint8  \-mflmap
+\&\-mdouble=\fR\fIbits\fR  \fB\-mlong\-double=\fR\fIbits\fR
 \&\fB\-mn_flash=\fR\fIsize\fR  \fB\-mno\-interrupts
 \&\-mmain\-is\-OS_task  \-mrelax  \-mrmw  \-mstrict\-X  \-mtiny\-stack
-\&\-mfract\-convert\-truncate
-\&\-mshort\-calls  \-nodevicelib  \-nodevicespecs
+\&\-mrodata\-in\-ram  \-mfract\-convert\-truncate
+\&\-mshort\-calls  \-mskip\-bug  \-nodevicelib  \-nodevicespecs
 \&\-Waddr\-space\-convert  \-Wmisspelled\-isr\fR
 .Sp
 \&\fIBlackfin Options\fR
@@ -1145,7 +1147,8 @@ in the following sections.
 \&\-mcode\-readable=\fR\fIsetting\fR
 \&\fB\-msplit\-addresses  \-mno\-split\-addresses
 \&\-mexplicit\-relocs  \-mno\-explicit\-relocs
-\&\-mcheck\-zero\-division  \-mno\-check\-zero\-division
+\&\-mexplicit\-relocs=\fR\fIrelease\fR
+\&\fB\-mcheck\-zero\-division  \-mno\-check\-zero\-division
 \&\-mdivide\-traps  \-mdivide\-breaks
 \&\-mload\-store\-pairs  \-mno\-load\-store\-pairs
 \&\-munaligned\-access  \-mno\-unaligned\-access
@@ -1498,7 +1501,7 @@ See \s-1RS/6000\s0 and PowerPC Options.
 \&\-munroll\-only\-small\-loops \-mlam=\fR\fIchoice\fR
 .Sp
 \&\fIx86 Windows Options\fR
-\&\fB\-mconsole  \-mcrtdll=\fR\fIlibrary\fR  \fB\-mcygwin  \-mno\-cygwin  \-mdll
+\&\fB\-mconsole  \-mcrtdll=\fR\fIlibrary\fR  \fB\-mdll
 \&\-mnop\-fun\-dllimport  \-mthread
 \&\-municode  \-mwin32  \-mwindows  \-fno\-set\-stack\-executable\fR
 .Sp
@@ -2974,27 +2977,33 @@ make such a program work with the opposite default.
 The type \f(CW\*(C`char\*(C'\fR is always a distinct type from each of
 \&\f(CW\*(C`signed char\*(C'\fR or \f(CW\*(C`unsigned char\*(C'\fR, even though its behavior
 is always just like one of those two.
-.IP "\fB\-fstrict\-flex\-arrays\fR" 4
-.IX Item "-fstrict-flex-arrays"
-Control when to treat the trailing array of a structure as a flexible array
-member for the purpose of accessing the elements of such an array.
-The positive form is equivalent to \fB\-fstrict\-flex\-arrays=3\fR, which is the
-strictest.  A trailing array is treated as a flexible array member only when it
-is declared as a flexible array member per C99 standard onwards.
-The negative form is equivalent to \fB\-fstrict\-flex\-arrays=0\fR, which is the
-least strict.  All trailing arrays of structures are treated as flexible array
-members.
-.IP "\fB\-fstrict\-flex\-arrays=\fR\fIlevel\fR" 4
-.IX Item "-fstrict-flex-arrays=level"
+.IP "\fB\-fstrict\-flex\-arrays\fR (C and \*(C+ only)" 4
+.IX Item "-fstrict-flex-arrays (C and only)"
+.PD 0
+.IP "\fB\-fstrict\-flex\-arrays=\fR\fIlevel\fR\fB \fR(C and \*(C+ only)" 4
+.IX Item "-fstrict-flex-arrays=level (C and only)"
+.PD
 Control when to treat the trailing array of a structure as a flexible array
 member for the purpose of accessing the elements of such an array.  The value
 of \fIlevel\fR controls the level of strictness.
+.Sp
+\&\fB\-fstrict\-flex\-arrays\fR is equivalent to
+\&\fB\-fstrict\-flex\-arrays=3\fR, which is the strictest; all
+trailing arrays of structures are treated as flexible array members.
+.Sp
+The negative form \fB\-fno\-strict\-flex\-arrays\fR is equivalent to
+\&\fB\-fstrict\-flex\-arrays=0\fR, which is the least strict.  In this
+case a trailing array is treated as a flexible array member only when
+it is declared as a flexible array member per C99 standard onwards.
 .Sp
 The possible values of \fIlevel\fR are the same as for the
 \&\f(CW\*(C`strict_flex_array\*(C'\fR attribute.
 .Sp
 You can control this behavior for a specific trailing array field of a
 structure by using the variable attribute \f(CW\*(C`strict_flex_array\*(C'\fR attribute.
+.Sp
+The \fB\-fstrict_flex_arrays\fR option interacts with the
+\&\fB\-Wstrict\-flex\-arrays\fR option.
 .IP "\fB\-fsso\-struct=\fR\fIendianness\fR" 4
 .IX Item "-fsso-struct=endianness"
 Set the default scalar storage order of structures and unions to the
@@ -4676,89 +4685,6 @@ annotations.
 .IX Item "-Wsuggest-override"
 Warn about overriding virtual functions that are not marked with the
 \&\f(CW\*(C`override\*(C'\fR keyword.
-.IP "\fB\-Wuse\-after\-free\fR" 4
-.IX Item "-Wuse-after-free"
-.PD 0
-.IP "\fB\-Wuse\-after\-free=\fR\fIn\fR" 4
-.IX Item "-Wuse-after-free=n"
-.PD
-Warn about uses of pointers to dynamically allocated objects that have
-been rendered indeterminate by a call to a deallocation function.
-The warning is enabled at all optimization levels but may yield different
-results with optimization than without.
-.RS 4
-.IP "\fB\-Wuse\-after\-free=1\fR" 4
-.IX Item "-Wuse-after-free=1"
-At level 1 the warning attempts to diagnose only unconditional uses
-of pointers made indeterminate by a deallocation call or a successful
-call to \f(CW\*(C`realloc\*(C'\fR, regardless of whether or not the call resulted
-in an actual reallocatio of memory.  This includes double\-\f(CW\*(C`free\*(C'\fR
-calls as well as uses in arithmetic and relational expressions.  Although
-undefined, uses of indeterminate pointers in equality (or inequality)
-expressions are not diagnosed at this level.
-.IP "\fB\-Wuse\-after\-free=2\fR" 4
-.IX Item "-Wuse-after-free=2"
-At level 2, in addition to unconditional uses, the warning also diagnoses
-conditional uses of pointers made indeterminate by a deallocation call.
-As at level 2, uses in equality (or inequality) expressions are not
-diagnosed.  For example, the second call to \f(CW\*(C`free\*(C'\fR in the following
-function is diagnosed at this level:
-.Sp
-.Vb 1
-\&        struct A { int refcount; void *data; };
-\&        
-\&        void release (struct A *p)
-\&        {
-\&          int refcount = \-\-p\->refcount;
-\&          free (p);
-\&          if (refcount == 0)
-\&            free (p\->data);   // warning: p may be used after free
-\&        }
-.Ve
-.IP "\fB\-Wuse\-after\-free=3\fR" 4
-.IX Item "-Wuse-after-free=3"
-At level 3, the warning also diagnoses uses of indeterminate pointers in
-equality expressions.  All uses of indeterminate pointers are undefined
-but equality tests sometimes appear after calls to \f(CW\*(C`realloc\*(C'\fR as
-an attempt to determine whether the call resulted in relocating the object
-to a different address.  They are diagnosed at a separate level to aid
-legacy code gradually transition to safe alternatives.  For example,
-the equality test in the function below is diagnosed at this level:
-.Sp
-.Vb 1
-\&        void adjust_pointers (int**, int);
-\&        
-\&        void grow (int **p, int n)
-\&        {
-\&          int **q = (int**)realloc (p, n *= 2);
-\&          if (q == p)
-\&            return;
-\&          adjust_pointers ((int**)q, n);
-\&        }
-.Ve
-.Sp
-To avoid the warning at this level, store offsets into allocated memory
-instead of pointers.  This approach obviates needing to adjust the stored
-pointers after reallocation.
-.RE
-.RS 4
-.Sp
-\&\fB\-Wuse\-after\-free=2\fR is included in \fB\-Wall\fR.
-.RE
-.IP "\fB\-Wuseless\-cast\fR (C, Objective-C, \*(C+ and Objective\-\*(C+ only)" 4
-.IX Item "-Wuseless-cast (C, Objective-C, and Objective- only)"
-Warn when an expression is cast to its own type.  This warning does not
-occur when a class object is converted to a non-reference type as that
-is a way to create a temporary:
-.Sp
-.Vb 6
-\&        struct S { };
-\&        void g (S&&);
-\&        void f (S&& arg)
-\&        {
-\&          g (S(arg)); // make arg prvalue so that it can bind to S&&
-\&        }
-.Ve
 .IP "\fB\-Wno\-conversion\-null\fR (\*(C+ and Objective\-\*(C+ only)" 4
 .IX Item "-Wno-conversion-null ( and Objective- only)"
 Do not warn for conversions between \f(CW\*(C`NULL\*(C'\fR and non-pointer
@@ -6019,52 +5945,64 @@ Options\fR and \fBObjective-C and Objective\-\*(C+ Dialect Options\fR.
 \&\fB\-Wall\fR turns on the following warning flags:
 .Sp
 \&\fB\-Waddress
-\&\-Warray\-bounds=1\fR (only with\fB \fR\fB\-O2\fR)
+\&\-Waligned\-new\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Warray\-bounds=1\fR (only with\fB \fR\fB\-O2\fR)
 \&\fB\-Warray\-compare
-\&\-Warray\-parameter=2\fR (C and Objective-C only)
-\&\fB\-Wbool\-compare
+\&\-Warray\-parameter=2
+\&\-Wbool\-compare
 \&\-Wbool\-operation
-\&\-Wc++11\-compat  \-Wc++14\-compat
+\&\-Wc++11\-compat  \-Wc++14\-compat  \-Wc++17compat  \-Wc++20compat
 \&\-Wcatch\-value\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wchar\-subscripts
-\&\-Wcomment
+\&\-Wclass\-memaccess\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wcomment
+\&\-Wdangling\-else
 \&\-Wdangling\-pointer=2
-\&\-Wduplicate\-decl\-specifier\fR (C and Objective-C only)
+\&\-Wdelete\-non\-virtual\-dtor\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wduplicate\-decl\-specifier\fR (C and Objective-C only)
 \&\fB\-Wenum\-compare\fR (in C/ObjC; this is on by default in \*(C+)
 \&\fB\-Wenum\-int\-mismatch\fR (C and Objective-C only)
-\&\fB\-Wformat
-\&\-Wformat\-overflow
-\&\-Wformat\-truncation
-\&\-Wint\-in\-bool\-context
+\&\fB\-Wformat=1
+\&\-Wformat\-contains\-nul
+\&\-Wformat\-diag
+\&\-Wformat\-extra\-args
+\&\-Wformat\-overflow=1
+\&\-Wformat\-truncation=1
+\&\-Wformat\-zero\-length
+\&\-Wframe\-address
 \&\-Wimplicit\fR (C and Objective-C only)
-\&\fB\-Wimplicit\-int\fR (C and Objective-C only)
 \&\fB\-Wimplicit\-function\-declaration\fR (C and Objective-C only)
-\&\fB\-Winit\-self\fR (only for \*(C+)
-\&\fB\-Wlogical\-not\-parentheses
+\&\fB\-Wimplicit\-int\fR (C and Objective-C only)
+\&\fB\-Winfinite\-recursion
+\&\-Winit\-self\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wint\-in\-bool\-context
+\&\-Wlogical\-not\-parentheses
 \&\-Wmain\fR (only for C/ObjC and unless\fB \fR\fB\-ffreestanding\fR)
 \&\fB\-Wmaybe\-uninitialized
 \&\-Wmemset\-elt\-size
 \&\-Wmemset\-transposed\-args
 \&\-Wmisleading\-indentation\fR (only for C/\*(C+)
 \&\fB\-Wmismatched\-dealloc
-\&\-Wmismatched\-new\-delete\fR (only for C/\*(C+)
+\&\-Wmismatched\-new\-delete\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wmissing\-attributes
 \&\-Wmissing\-braces\fR (only for C/ObjC)
 \&\fB\-Wmultistatement\-macros
-\&\-Wnarrowing\fR (only for \*(C+)
+\&\-Wnarrowing\fR  (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wnonnull
 \&\-Wnonnull\-compare
-\&\-Wopenmp\-simd
+\&\-Wopenmp\-simd\fR (C and \*(C+ only)
+\&\fB\-Woverloaded\-virtual=1\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wpacked\-not\-aligned
 \&\-Wparentheses
-\&\-Wpessimizing\-move\fR (only for \*(C+)
-\&\fB\-Wpointer\-sign
-\&\-Wrange\-loop\-construct\fR (only for \*(C+)
-\&\fB\-Wreorder
-\&\-Wrestrict
+\&\-Wpessimizing\-move\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wpointer\-sign\fR (only for C/ObjC)
+\&\fB\-Wrange\-loop\-construct\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wreorder\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wrestrict
 \&\-Wreturn\-type
-\&\-Wself\-move\fR (only for \*(C+)
+\&\-Wself\-move\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wsequence\-point
-\&\-Wsign\-compare\fR (only in \*(C+)
+\&\-Wsign\-compare\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wsizeof\-array\-div
 \&\-Wsizeof\-pointer\-div
 \&\-Wsizeof\-pointer\-memaccess
@@ -6075,13 +6013,17 @@ Options\fR and \fBObjective-C and Objective\-\*(C+ Dialect Options\fR.
 \&\-Wtrigraphs
 \&\-Wuninitialized
 \&\-Wunknown\-pragmas
-\&\-Wunused\-function
+\&\-Wunused
+\&\-Wunused\-but\-set\-variable
+\&\-Wunused\-const\-variable=1\fR (only for C/ObjC)
+\&\fB\-Wunused\-function
 \&\-Wunused\-label
+\&\-Wunused\-local\-typedefs
 \&\-Wunused\-value
 \&\-Wunused\-variable
 \&\-Wuse\-after\-free=2
-\&\-Wvla\-parameter\fR (C and Objective-C only)
-\&\fB\-Wvolatile\-register\-var
+\&\-Wvla\-parameter
+\&\-Wvolatile\-register\-var
 \&\-Wzero\-length\-bounds\fR
 .Sp
 Note that some warning flags are not implied by \fB\-Wall\fR.  Some of
@@ -6097,24 +6039,30 @@ This enables some extra warning flags that are not enabled by
 \&\fB\-Wall\fR. (This option used to be called \fB\-W\fR.  The older
 name is still supported, but the newer name is more descriptive.)
 .Sp
-\&\fB\-Wclobbered
+\&\fB\-Wabsolute\-value\fR (only for C/ObjC)
+\&\fB\-Walloc\-size
+\&\-Wcalloc\-transposed\-args
 \&\-Wcast\-function\-type
-\&\-Wdeprecated\-copy\fR (\*(C+ only)
+\&\-Wclobbered
+\&\-Wdeprecated\-copy\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wempty\-body
-\&\-Wenum\-conversion\fR (C only)
-\&\fB\-Wignored\-qualifiers
-\&\-Wimplicit\-fallthrough=3
+\&\-Wenum\-conversion\fR (only for C/ObjC)
+\&\fB\-Wexpansion\-to\-defined
+\&\-Wignored\-qualifiers\fR  (only for C/\*(C+)
+\&\fB\-Wimplicit\-fallthrough=3
+\&\-Wmaybe\-uninitialized
 \&\-Wmissing\-field\-initializers
-\&\-Wmissing\-parameter\-type\fR (C only)
-\&\fB\-Wold\-style\-declaration\fR (C only)
-\&\fB\-Woverride\-init
-\&\-Wsign\-compare\fR (C only)
+\&\-Wmissing\-parameter\-type\fR (C/ObjC only)
+\&\fB\-Wold\-style\-declaration\fR (C/ObjC only)
+\&\fB\-Woverride\-init\fR (C/ObjC only)
+\&\fB\-Wredundant\-move\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wshift\-negative\-value\fR (in \*(C+11 to \*(C+17 and in C99 and newer)
+\&\fB\-Wsign\-compare\fR (\*(C+ and Objective\-\*(C+ only)
+\&\fB\-Wsized\-deallocation\fR (\*(C+ and Objective\-\*(C+ only)
 \&\fB\-Wstring\-compare
-\&\-Wredundant\-move\fR (only for \*(C+)
-\&\fB\-Wtype\-limits
+\&\-Wtype\-limits
 \&\-Wuninitialized
-\&\-Wshift\-negative\-value\fR (in \*(C+11 to \*(C+17 and in C99 and newer)
-\&\fB\-Wunused\-parameter\fR (only with\fB \fR\fB\-Wunused\fR\fB \fRor\fB \fR\fB\-Wall\fR)
+\&\-Wunused\-parameter\fR (only with\fB \fR\fB\-Wunused\fR\fB \fRor\fB \fR\fB\-Wall\fR)
 \&\fB\-Wunused\-but\-set\-parameter\fR (only with\fB \fR\fB\-Wunused\fR\fB \fRor\fB \fR\fB\-Wall\fR)
 .Sp
 The option \fB\-Wextra\fR also prints warning messages for the
@@ -7290,6 +7238,8 @@ This warning is enabled by \fB\-Wall\fR.
 .IP "\fB\-Wunused\-parameter\fR" 4
 .IX Item "-Wunused-parameter"
 Warn whenever a function parameter is unused aside from its declaration.
+This option is not enabled by \f(CW\*(C`\-Wunused\*(C'\fR unless \f(CW\*(C`\-Wextra\*(C'\fR is also
+specified.
 .Sp
 To suppress this warning use the \f(CW\*(C`unused\*(C'\fR attribute.
 .IP "\fB\-Wno\-unused\-result\fR" 4
@@ -7311,24 +7261,25 @@ To suppress this warning use the \f(CW\*(C`unused\*(C'\fR attribute.
 .IX Item "-Wunused-const-variable=n"
 .PD
 Warn whenever a constant static variable is unused aside from its declaration.
-\&\fB\-Wunused\-const\-variable=1\fR is enabled by \fB\-Wunused\-variable\fR
-for C, but not for \*(C+. In C this declares variable storage, but in \*(C+ this
-is not an error since const variables take the place of \f(CW\*(C`#define\*(C'\fRs.
 .Sp
 To suppress this warning use the \f(CW\*(C`unused\*(C'\fR attribute.
 .RS 4
 .IP "\fB\-Wunused\-const\-variable=1\fR" 4
 .IX Item "-Wunused-const-variable=1"
-This is the warning level that is enabled by \fB\-Wunused\-variable\fR for
-C.  It warns only about unused static const variables defined in the main
+Warn about unused static const variables defined in the main
 compilation unit, but not about static const variables declared in any
 header included.
+.Sp
+\&\fB\-Wunused\-const\-variable=1\fR is enabled by either
+\&\fB\-Wunused\-variable\fR or \fB\-Wunused\fR for C, but not for
+\&\*(C+. In C this declares variable storage, but in \*(C+ this is not an
+error since const variables take the place of \f(CW\*(C`#define\*(C'\fRs.
 .IP "\fB\-Wunused\-const\-variable=2\fR" 4
 .IX Item "-Wunused-const-variable=2"
 This warning level also warns for unused constant static variables in
-headers (excluding system headers).  This is the warning level of
-\&\fB\-Wunused\-const\-variable\fR and must be explicitly requested since
-in \*(C+ this isn't an error and in C it might be harder to clean up all
+headers (excluding system headers).  It is equivalent to the short form
+\&\fB\-Wunused\-const\-variable\fR.  This level must be explicitly
+requested in both C and \*(C+ because it might be hard to clean up all
 headers included.
 .RE
 .RS 4
@@ -7345,11 +7296,99 @@ an expression such as \f(CW\*(C`x[i,j]\*(C'\fR causes a warning, while
 This warning is enabled by \fB\-Wall\fR.
 .IP "\fB\-Wunused\fR" 4
 .IX Item "-Wunused"
-All the above \fB\-Wunused\fR options combined.
+All the above \fB\-Wunused\fR options combined, except those documented
+as needing to be specified explicitly.
 .Sp
 In order to get a warning about an unused function parameter, you must
 either specify \fB\-Wextra \-Wunused\fR (note that \fB\-Wall\fR implies
-\&\fB\-Wunused\fR), or separately specify \fB\-Wunused\-parameter\fR.
+\&\fB\-Wunused\fR), or separately specify \fB\-Wunused\-parameter\fR and/or
+\&\fB\-Wunused\-but\-set\-parameter\fR.
+.Sp
+\&\fB\-Wunused\fR enables only \fB\-Wunused\-const\-variable=1\fR rather than
+\&\fB\-Wunused\-const\-variable\fR, and only for C, not \*(C+.
+.IP "\fB\-Wuse\-after\-free\fR (C, Objective-C, \*(C+ and Objective\-\*(C+ only)" 4
+.IX Item "-Wuse-after-free (C, Objective-C, and Objective- only)"
+.PD 0
+.IP "\fB\-Wuse\-after\-free=\fR\fIn\fR" 4
+.IX Item "-Wuse-after-free=n"
+.PD
+Warn about uses of pointers to dynamically allocated objects that have
+been rendered indeterminate by a call to a deallocation function.
+The warning is enabled at all optimization levels but may yield different
+results with optimization than without.
+.RS 4
+.IP "\fB\-Wuse\-after\-free=1\fR" 4
+.IX Item "-Wuse-after-free=1"
+At level 1 the warning attempts to diagnose only unconditional uses
+of pointers made indeterminate by a deallocation call or a successful
+call to \f(CW\*(C`realloc\*(C'\fR, regardless of whether or not the call resulted
+in an actual reallocation of memory.  This includes double\-\f(CW\*(C`free\*(C'\fR
+calls as well as uses in arithmetic and relational expressions.  Although
+undefined, uses of indeterminate pointers in equality (or inequality)
+expressions are not diagnosed at this level.
+.IP "\fB\-Wuse\-after\-free=2\fR" 4
+.IX Item "-Wuse-after-free=2"
+At level 2, in addition to unconditional uses, the warning also diagnoses
+conditional uses of pointers made indeterminate by a deallocation call.
+As at level 2, uses in equality (or inequality) expressions are not
+diagnosed.  For example, the second call to \f(CW\*(C`free\*(C'\fR in the following
+function is diagnosed at this level:
+.Sp
+.Vb 1
+\&        struct A { int refcount; void *data; };
+\&        
+\&        void release (struct A *p)
+\&        {
+\&          int refcount = \-\-p\->refcount;
+\&          free (p);
+\&          if (refcount == 0)
+\&            free (p\->data);   // warning: p may be used after free
+\&        }
+.Ve
+.IP "\fB\-Wuse\-after\-free=3\fR" 4
+.IX Item "-Wuse-after-free=3"
+At level 3, the warning also diagnoses uses of indeterminate pointers in
+equality expressions.  All uses of indeterminate pointers are undefined
+but equality tests sometimes appear after calls to \f(CW\*(C`realloc\*(C'\fR as
+an attempt to determine whether the call resulted in relocating the object
+to a different address.  They are diagnosed at a separate level to aid
+gradually transitioning legacy code to safe alternatives.  For example,
+the equality test in the function below is diagnosed at this level:
+.Sp
+.Vb 1
+\&        void adjust_pointers (int**, int);
+\&        
+\&        void grow (int **p, int n)
+\&        {
+\&          int **q = (int**)realloc (p, n *= 2);
+\&          if (q == p)
+\&            return;
+\&          adjust_pointers ((int**)q, n);
+\&        }
+.Ve
+.Sp
+To avoid the warning at this level, store offsets into allocated memory
+instead of pointers.  This approach obviates needing to adjust the stored
+pointers after reallocation.
+.RE
+.RS 4
+.Sp
+\&\fB\-Wuse\-after\-free=2\fR is included in \fB\-Wall\fR.
+.RE
+.IP "\fB\-Wuseless\-cast\fR (C, Objective-C, \*(C+ and Objective\-\*(C+ only)" 4
+.IX Item "-Wuseless-cast (C, Objective-C, and Objective- only)"
+Warn when an expression is cast to its own type.  This warning does not
+occur when a class object is converted to a non-reference type as that
+is a way to create a temporary:
+.Sp
+.Vb 6
+\&        struct S { };
+\&        void g (S&&);
+\&        void f (S&& arg)
+\&        {
+\&          g (S(arg)); // make arg prvalue so that it can bind to S&&
+\&        }
+.Ve
 .IP "\fB\-Wuninitialized\fR" 4
 .IX Item "-Wuninitialized"
 Warn if an object with automatic or allocated storage duration is used
@@ -7749,28 +7788,30 @@ however, are not suitable arguments to functions that expect
 \&\f(CW\*(C`NUL\*(C'\fR\-terminated strings.  To help detect accidental misuses of
 such arrays \s-1GCC\s0 issues warnings unless it can prove that the use is
 safe.
-.IP "\fB\-Wstrict\-flex\-arrays\fR" 4
-.IX Item "-Wstrict-flex-arrays"
-Warn about inproper usages of flexible array members
+.IP "\fB\-Wstrict\-flex\-arrays\fR (C and \*(C+ only)" 4
+.IX Item "-Wstrict-flex-arrays (C and only)"
+Warn about improper usages of flexible array members
 according to the \fIlevel\fR of the \f(CW\*(C`strict_flex_array (\f(CIlevel\f(CW)\*(C'\fR
 attribute attached to the trailing array field of a structure if it's
 available, otherwise according to the \fIlevel\fR of the option
-\&\fB\-fstrict\-flex\-arrays=\fR\fIlevel\fR.
+\&\fB\-fstrict\-flex\-arrays=\fR\fIlevel\fR.    \f(CW\*(C`\-Wstrict\-flex\-arrays\*(C'\fR
+is effective only when \fIlevel\fR is greater than 0.
 .Sp
-This option is effective only when \fIlevel\fR is bigger than 0.  Otherwise,
-it will be ignored with a warning.
-.Sp
-when \fIlevel\fR=1, warnings will be issued for a trailing array reference
+When \fIlevel\fR=1, warnings are issued for a trailing array reference
 of a structure that have 2 or more elements if the trailing array is referenced
 as a flexible array member.
 .Sp
-when \fIlevel\fR=2, in addition to \fIlevel\fR=1, additional warnings will be
+When \fIlevel\fR=2, in addition to \fIlevel\fR=1, additional warnings are
 issued for a trailing one-element array reference of a structure
 if the array is referenced as a flexible array member.
 .Sp
-when \fIlevel\fR=3, in addition to \fIlevel\fR=2, additional warnings will be
+When \fIlevel\fR=3, in addition to \fIlevel\fR=2, additional warnings are
 issued for a trailing zero-length array reference of a structure
 if the array is referenced as a flexible array member.
+.Sp
+This option is more effective when \fB\-ftree\-vrp\fR is active (the
+default for \fB\-O2\fR and above) but some warnings may be diagnosed
+even without optimization.
 .IP "\fB\-Wsuggest\-attribute=\fR[\fBpure\fR|\fBconst\fR|\fBnoreturn\fR|\fBformat\fR|\fBcold\fR|\fBmalloc\fR]\fBreturns_nonnull\fR|" 4
 .IX Item "-Wsuggest-attribute=[pure|const|noreturn|format|cold|malloc]returns_nonnull|"
 Warn for cases where adding an attribute may be beneficial. The
@@ -8024,23 +8065,25 @@ type.  This comparison was deprecated in \*(C+20.  For example:
 .IP "\fB\-Warray\-parameter=\fR\fIn\fR" 4
 .IX Item "-Warray-parameter=n"
 .PD
-Warn about redeclarations of functions involving arguments of array or
+Warn about redeclarations of functions involving parameters of array or
 pointer types of inconsistent kinds or forms, and enable the detection
 of out-of-bounds accesses to such parameters by warnings such as
 \&\fB\-Warray\-bounds\fR.
 .Sp
-If the first function declaration uses the array form the bound specified
+If the first function declaration uses the array form for a parameter
+declaration, the bound specified
 in the array is assumed to be the minimum number of elements expected to
 be provided in calls to the function and the maximum number of elements
 accessed by it.  Failing to provide arguments of sufficient size or accessing
 more than the maximum number of elements may be diagnosed by warnings such
-as \fB\-Warray\-bounds\fR.  At level 1 the warning diagnoses inconsistencies
+as \fB\-Warray\-bounds\fR or \fB\-Wstringop\-overflow\fR.
+At level 1, the warning diagnoses inconsistencies
 involving array parameters declared using the \f(CW\*(C`T[static N]\*(C'\fR form.
 .Sp
-For example, the warning triggers for the following redeclarations because
-the first one allows an array of any size to be passed to \f(CW\*(C`f\*(C'\fR while
-the second one with the keyword \f(CW\*(C`static\*(C'\fR specifies that the array
-argument must have at least four elements.
+For example, the warning triggers for the second declaration of \f(CW\*(C`f\*(C'\fR
+because the first one with the keyword \f(CW\*(C`static\*(C'\fR specifies that
+the array argument must have at least four elements, while the second
+allows an array of any size to be passed to \f(CW\*(C`f\*(C'\fR.
 .Sp
 .Vb 2
 \&        void f (int[static 4]);
@@ -8048,7 +8091,7 @@ argument must have at least four elements.
 \&        
 \&        void g (void)
 \&        {
-\&          int *p = (int *)malloc (4);
+\&          int *p = (int *)malloc (1 * sizeof (int));
 \&          f (p);                  // warning (array too small)
 \&          ...
 \&        }
@@ -8068,6 +8111,10 @@ not trigger a warning.
 \&\fB\-Warray\-parameter=2\fR is included in \fB\-Wall\fR.  The
 \&\fB\-Wvla\-parameter\fR option triggers warnings for similar inconsistencies
 involving Variable Length Array arguments.
+.Sp
+The short form of the option \fB\-Warray\-parameter\fR is equivalent to
+\&\fB\-Warray\-parameter=2\fR.  The negative form \fB\-Wno\-array\-parameter\fR
+is equivalent to \fB\-Warray\-parameter=0\fR.
 .IP "\fB\-Wattribute\-alias=\fR\fIn\fR" 4
 .IX Item "-Wattribute-alias=n"
 .PD 0
@@ -8570,14 +8617,12 @@ means that the pointer was meant to be dereferenced.  For example:
 Note that the code above is invalid in \*(C+11.
 .Sp
 This warning is enabled by default.
-.IP "\fB\-Wtsan\fR" 4
-.IX Item "-Wtsan"
-Warn about unsupported features in ThreadSanitizer.
+.IP "\fB\-Wno\-tsan\fR" 4
+.IX Item "-Wno-tsan"
+Disable warnings about unsupported features in ThreadSanitizer.
 .Sp
 ThreadSanitizer does not support \f(CW\*(C`std::atomic_thread_fence\*(C'\fR and
 can report false positives.
-.Sp
-This warning is enabled by default.
 .IP "\fB\-Wtype\-limits\fR" 4
 .IX Item "-Wtype-limits"
 Warn if a comparison is always true or always false due to the limited
@@ -8907,55 +8952,64 @@ levels but may yield different results with optimization than without.
 .RS 4
 .IP "\fB\-Wdangling\-pointer=1\fR" 4
 .IX Item "-Wdangling-pointer=1"
-At level 1 the warning diagnoses only unconditional uses of dangling pointers.
-For example
+At level 1, the warning diagnoses only unconditional uses of dangling pointers.
+.IP "\fB\-Wdangling\-pointer=2\fR" 4
+.IX Item "-Wdangling-pointer=2"
+At level 2, in addition to unconditional uses the warning also diagnoses
+conditional uses of dangling pointers.
+.RE
+.RS 4
 .Sp
-.Vb 6
-\&        int f (int c1, int c2, x)
+The short form \fB\-Wdangling\-pointer\fR is equivalent to
+\&\fB\-Wdangling\-pointer=2\fR, while \fB\-Wno\-dangling\-pointer\fR and
+\&\fB\-Wdangling\-pointer=0\fR have the same effect of disabling the warnings.
+\&\fB\-Wdangling\-pointer=2\fR is included in \fB\-Wall\fR.
+.Sp
+This example triggers the warning at level 1; the address of the unnamed
+temporary is unconditionally referenced outside of its scope.
+.Sp
+.Vb 9
+\&        char f (char c1, char c2, char c3)
 \&        {
-\&          char *p = strchr ((char[]){ c1, c2 }, c3);
-\&          // warning: dangling pointer to a compound literal
-\&          return p ? *p : \*(Aqx\*(Aq;
+\&          char *p;
+\&          {
+\&            p = (char[]) { c1, c2, c3 };
+\&          }
+\&          // warning: using dangling pointer \*(Aqp\*(Aq to an unnamed temporary
+\&          return *p;
 \&        }
 .Ve
 .Sp
 In the following function the store of the address of the local variable
-\&\f(CW\*(C`x\*(C'\fR in the escaped pointer \f(CW*p\fR also triggers the warning.
+\&\f(CW\*(C`x\*(C'\fR in the escaped pointer \f(CW*p\fR triggers the warning at
+level 1.
 .Sp
 .Vb 6
 \&        void g (int **p)
 \&        {
 \&          int x = 7;
-\&          // warning: storing the address of a local variable in *p
+\&          // warning: storing the address of local variable \*(Aqx\*(Aq in \*(Aq*p\*(Aq
 \&          *p = &x;
 \&        }
 .Ve
-.IP "\fB\-Wdangling\-pointer=2\fR" 4
-.IX Item "-Wdangling-pointer=2"
-At level 2, in addition to unconditional uses the warning also diagnoses
-conditional uses of dangling pointers.
 .Sp
-For example, because the array \fIa\fR in the following function is out of
-scope when the pointer \fIs\fR that was set to point is used, the warning
-triggers at this level.
+In this example, the array \fIa\fR is out of
+scope when the pointer \fIs\fR is used.  Since the code that sets \f(CW\*(C`s\*(C'\fR
+is conditional, the warning triggers at level 2.
 .Sp
 .Vb 11
-\&        void f (char *s)
+\&        extern void frob (const char *);
+\&        void h (char *s)
 \&        {
 \&          if (!s)
 \&            {
 \&              char a[12] = "tmpname";
 \&              s = a;
 \&            }
-\&          // warning: dangling pointer to a may be used
-\&          strcat (s, ".tmp");
-\&          ...
+\&          // warning: dangling pointer \*(Aqs\*(Aq to \*(Aqa\*(Aq may be used
+\&          frob (s);
 \&        }
 .Ve
-.RE
-.RS 4
-.Sp
-\&\fB\-Wdangling\-pointer=2\fR is included in \fB\-Wall\fR.
 .RE
 .IP "\fB\-Wdate\-time\fR" 4
 .IX Item "-Wdate-time"
@@ -9769,18 +9823,19 @@ Warn if a register variable is declared volatile.  The volatile
 modifier does not inhibit all optimizations that may eliminate reads
 and/or writes to register variables.  This warning is enabled by
 \&\fB\-Wall\fR.
-.IP "\fB\-Wxor\-used\-as\-pow\fR (C, \*(C+, Objective-C and Objective\-\*(C+ only)" 4
-.IX Item "-Wxor-used-as-pow (C, , Objective-C and Objective- only)"
-Warn about uses of \f(CW\*(C`^\*(C'\fR, the exclusive or operator, where it appears
-the user meant exponentiation.  Specifically, the warning occurs when the
+.IP "\fB\-Wno\-xor\-used\-as\-pow\fR (C, \*(C+, Objective-C and Objective\-\*(C+ only)" 4
+.IX Item "-Wno-xor-used-as-pow (C, , Objective-C and Objective- only)"
+Disable warnings about uses of \f(CW\*(C`^\*(C'\fR, the exclusive or operator,
+where it appears the code meant exponentiation.
+Specifically, the warning occurs when the
 left-hand side is the decimal constant 2 or 10 and the right-hand side
 is also a decimal constant.
 .Sp
 In C and \*(C+, \f(CW\*(C`^\*(C'\fR means exclusive or, whereas in some other languages
 (e.g. TeX and some versions of \s-1BASIC\s0) it means exponentiation.
 .Sp
-This warning is enabled by default.  It can be silenced by converting one
-of the operands to hexadecimal.
+This warning can be silenced by converting one of the operands to
+hexadecimal as well as by compiling with \fB\-Wno\-xor\-used\-as\-pow\fR.
 .IP "\fB\-Wdisabled\-optimization\fR" 4
 .IX Item "-Wdisabled-optimization"
 Warn if a requested optimization pass is disabled.  This warning does
@@ -13261,6 +13316,9 @@ Align the start of functions to the next power-of-two greater than or
 equal to \fIn\fR, skipping up to \fIm\fR\-1 bytes.  This ensures that at
 least the first \fIm\fR bytes of the function can be fetched by the \s-1CPU\s0
 without crossing an \fIn\fR\-byte alignment boundary.
+This is an optimization of code performance and alignment is ignored for
+functions considered cold.  If alignment is required for all functions,
+use \fB\-fmin\-function\-alignment\fR.
 .Sp
 If \fIm\fR is not specified, it defaults to \fIn\fR.
 .Sp
@@ -13334,6 +13392,8 @@ Enabled at levels \fB\-O2\fR, \fB\-O3\fR.
 Align loops to a power-of-two boundary.  If the loops are executed
 many times, this makes up for any execution of the dummy padding
 instructions.
+This is an optimization of code performance and alignment is ignored for
+loops considered cold.
 .Sp
 If \fB\-falign\-labels\fR is greater than this value, then its value
 is used instead.
@@ -13361,6 +13421,8 @@ Enabled at levels \fB\-O2\fR, \fB\-O3\fR.
 Align branch targets to a power-of-two boundary, for branch targets
 where the targets can only be reached by jumping.  In this case,
 no dummy operations need be executed.
+This is an optimization of code performance and alignment is ignored for
+jumps considered cold.
 .Sp
 If \fB\-falign\-labels\fR is greater than this value, then its value
 is used instead.
@@ -13373,6 +13435,12 @@ If \fIn\fR is not specified or is zero, use a machine-dependent default.
 The maximum allowed \fIn\fR option value is 65536.
 .Sp
 Enabled at levels \fB\-O2\fR, \fB\-O3\fR.
+.IP "\fB\-fmin\-function\-alignment\fR" 4
+.IX Item "-fmin-function-alignment"
+Specify minimal alignment of functions to the next power-of-two greater than or
+equal to \fIn\fR. Unlike \fB\-falign\-functions\fR this alignment is applied
+also to all functions (even those considered cold).  The alignment is also not
+affected by \fB\-flimit\-function\-alignment\fR
 .IP "\fB\-fno\-allocation\-dce\fR" 4
 .IX Item "-fno-allocation-dce"
 Do not remove unused \*(C+ allocations in dead code elimination.
@@ -13461,7 +13529,7 @@ To use the link-time optimizer, \fB\-flto\fR and optimization
 options should be specified at compile time and during the final link.
 It is recommended that you compile all the files participating in the
 same link with the same options and also specify those options at
-link time.  
+link time.
 For example:
 .Sp
 .Vb 3
@@ -20436,7 +20504,7 @@ performance of the code.  Permissible values for this option are:
 \&\fBcortex\-r82\fR, \fBcortex\-x1\fR, \fBcortex\-x1c\fR, \fBcortex\-x2\fR,
 \&\fBcortex\-x3\fR, \fBcortex\-x4\fR, \fBcortex\-a510\fR, \fBcortex\-a520\fR,
 \&\fBcortex\-a710\fR, \fBcortex\-a715\fR, \fBcortex\-a720\fR, \fBampere1\fR,
-\&\fBampere1a\fR, \fBampere1b\fR, and \fBnative\fR.
+\&\fBampere1a\fR, \fBampere1b\fR, \fBcobalt\-100\fR and \fBnative\fR.
 .Sp
 The values \fBcortex\-a57.cortex\-a53\fR, \fBcortex\-a72.cortex\-a53\fR,
 \&\fBcortex\-a73.cortex\-a35\fR, \fBcortex\-a73.cortex\-a53\fR,
@@ -20945,6 +21013,12 @@ Compile for \s-1CDNA1\s0 Instinct \s-1MI100\s0 series devices (gfx908).
 .IP "\fBgfx90a\fR" 4
 .IX Item "gfx90a"
 Compile for \s-1CDNA2\s0 Instinct \s-1MI200\s0 series devices (gfx90a).
+.IP "\fBgfx1030\fR" 4
+.IX Item "gfx1030"
+Compile for \s-1RDNA2\s0 gfx1030 devices (\s-1GFX10\s0 series).
+.IP "\fBgfx1100\fR" 4
+.IX Item "gfx1100"
+Compile for \s-1RDNA3\s0 gfx1100 devices (\s-1GFX11\s0 series).
 .RE
 .RS 4
 .RE
@@ -22916,7 +22990,7 @@ The default for this option is \fBavr2\fR.
 .el .IP "\f(CWavrxmega3\fR" 4
 .IX Item "avrxmega3"
 \&\*(L"\s-1XMEGA\*(R"\s0 devices with up to 64 KiB of combined program memory and \s-1RAM,\s0 and with program memory visible in the \s-1RAM\s0 address space.
-\&\fImcu\fR = \f(CW\*(C`attiny202\*(C'\fR, \f(CW\*(C`attiny204\*(C'\fR, \f(CW\*(C`attiny212\*(C'\fR, \f(CW\*(C`attiny214\*(C'\fR, \f(CW\*(C`attiny402\*(C'\fR, \f(CW\*(C`attiny404\*(C'\fR, \f(CW\*(C`attiny406\*(C'\fR, \f(CW\*(C`attiny412\*(C'\fR, \f(CW\*(C`attiny414\*(C'\fR, \f(CW\*(C`attiny416\*(C'\fR, \f(CW\*(C`attiny417\*(C'\fR, \f(CW\*(C`attiny424\*(C'\fR, \f(CW\*(C`attiny426\*(C'\fR, \f(CW\*(C`attiny427\*(C'\fR, \f(CW\*(C`attiny804\*(C'\fR, \f(CW\*(C`attiny806\*(C'\fR, \f(CW\*(C`attiny807\*(C'\fR, \f(CW\*(C`attiny814\*(C'\fR, \f(CW\*(C`attiny816\*(C'\fR, \f(CW\*(C`attiny817\*(C'\fR, \f(CW\*(C`attiny824\*(C'\fR, \f(CW\*(C`attiny826\*(C'\fR, \f(CW\*(C`attiny827\*(C'\fR, \f(CW\*(C`attiny1604\*(C'\fR, \f(CW\*(C`attiny1606\*(C'\fR, \f(CW\*(C`attiny1607\*(C'\fR, \f(CW\*(C`attiny1614\*(C'\fR, \f(CW\*(C`attiny1616\*(C'\fR, \f(CW\*(C`attiny1617\*(C'\fR, \f(CW\*(C`attiny1624\*(C'\fR, \f(CW\*(C`attiny1626\*(C'\fR, \f(CW\*(C`attiny1627\*(C'\fR, \f(CW\*(C`attiny3214\*(C'\fR, \f(CW\*(C`attiny3216\*(C'\fR, \f(CW\*(C`attiny3217\*(C'\fR, \f(CW\*(C`attiny3224\*(C'\fR, \f(CW\*(C`attiny3226\*(C'\fR, \f(CW\*(C`attiny3227\*(C'\fR, \f(CW\*(C`atmega808\*(C'\fR, \f(CW\*(C`atmega809\*(C'\fR, \f(CW\*(C`atmega1608\*(C'\fR, \f(CW\*(C`atmega1609\*(C'\fR, \f(CW\*(C`atmega3208\*(C'\fR, \f(CW\*(C`atmega3209\*(C'\fR, \f(CW\*(C`atmega4808\*(C'\fR, \f(CW\*(C`atmega4809\*(C'\fR, \f(CW\*(C`avr16dd14\*(C'\fR, \f(CW\*(C`avr16dd20\*(C'\fR, \f(CW\*(C`avr16dd28\*(C'\fR, \f(CW\*(C`avr16dd32\*(C'\fR, \f(CW\*(C`avr32da28\*(C'\fR, \f(CW\*(C`avr32da32\*(C'\fR, \f(CW\*(C`avr32da48\*(C'\fR, \f(CW\*(C`avr32db28\*(C'\fR, \f(CW\*(C`avr32db32\*(C'\fR, \f(CW\*(C`avr32db48\*(C'\fR, \f(CW\*(C`avr32dd14\*(C'\fR, \f(CW\*(C`avr32dd20\*(C'\fR, \f(CW\*(C`avr32dd28\*(C'\fR, \f(CW\*(C`avr32dd32\*(C'\fR.
+\&\fImcu\fR = \f(CW\*(C`attiny202\*(C'\fR, \f(CW\*(C`attiny204\*(C'\fR, \f(CW\*(C`attiny212\*(C'\fR, \f(CW\*(C`attiny214\*(C'\fR, \f(CW\*(C`attiny402\*(C'\fR, \f(CW\*(C`attiny404\*(C'\fR, \f(CW\*(C`attiny406\*(C'\fR, \f(CW\*(C`attiny412\*(C'\fR, \f(CW\*(C`attiny414\*(C'\fR, \f(CW\*(C`attiny416\*(C'\fR, \f(CW\*(C`attiny417\*(C'\fR, \f(CW\*(C`attiny424\*(C'\fR, \f(CW\*(C`attiny426\*(C'\fR, \f(CW\*(C`attiny427\*(C'\fR, \f(CW\*(C`attiny804\*(C'\fR, \f(CW\*(C`attiny806\*(C'\fR, \f(CW\*(C`attiny807\*(C'\fR, \f(CW\*(C`attiny814\*(C'\fR, \f(CW\*(C`attiny816\*(C'\fR, \f(CW\*(C`attiny817\*(C'\fR, \f(CW\*(C`attiny824\*(C'\fR, \f(CW\*(C`attiny826\*(C'\fR, \f(CW\*(C`attiny827\*(C'\fR, \f(CW\*(C`attiny1604\*(C'\fR, \f(CW\*(C`attiny1606\*(C'\fR, \f(CW\*(C`attiny1607\*(C'\fR, \f(CW\*(C`attiny1614\*(C'\fR, \f(CW\*(C`attiny1616\*(C'\fR, \f(CW\*(C`attiny1617\*(C'\fR, \f(CW\*(C`attiny1624\*(C'\fR, \f(CW\*(C`attiny1626\*(C'\fR, \f(CW\*(C`attiny1627\*(C'\fR, \f(CW\*(C`attiny3214\*(C'\fR, \f(CW\*(C`attiny3216\*(C'\fR, \f(CW\*(C`attiny3217\*(C'\fR, \f(CW\*(C`attiny3224\*(C'\fR, \f(CW\*(C`attiny3226\*(C'\fR, \f(CW\*(C`attiny3227\*(C'\fR, \f(CW\*(C`atmega808\*(C'\fR, \f(CW\*(C`atmega809\*(C'\fR, \f(CW\*(C`atmega1608\*(C'\fR, \f(CW\*(C`atmega1609\*(C'\fR, \f(CW\*(C`atmega3208\*(C'\fR, \f(CW\*(C`atmega3209\*(C'\fR, \f(CW\*(C`atmega4808\*(C'\fR, \f(CW\*(C`atmega4809\*(C'\fR, \f(CW\*(C`avr16dd14\*(C'\fR, \f(CW\*(C`avr16dd20\*(C'\fR, \f(CW\*(C`avr16dd28\*(C'\fR, \f(CW\*(C`avr16dd32\*(C'\fR, \f(CW\*(C`avr16ea28\*(C'\fR, \f(CW\*(C`avr16ea32\*(C'\fR, \f(CW\*(C`avr16ea48\*(C'\fR, \f(CW\*(C`avr16eb14\*(C'\fR, \f(CW\*(C`avr16eb20\*(C'\fR, \f(CW\*(C`avr16eb28\*(C'\fR, \f(CW\*(C`avr16eb32\*(C'\fR, \f(CW\*(C`avr32da28\*(C'\fR, \f(CW\*(C`avr32da32\*(C'\fR, \f(CW\*(C`avr32da48\*(C'\fR, \f(CW\*(C`avr32db28\*(C'\fR, \f(CW\*(C`avr32db32\*(C'\fR, \f(CW\*(C`avr32db48\*(C'\fR, \f(CW\*(C`avr32dd14\*(C'\fR, \f(CW\*(C`avr32dd20\*(C'\fR, \f(CW\*(C`avr32dd28\*(C'\fR, \f(CW\*(C`avr32dd32\*(C'\fR, \f(CW\*(C`avr32ea28\*(C'\fR, \f(CW\*(C`avr32ea32\*(C'\fR, \f(CW\*(C`avr32ea48\*(C'\fR.
 .ie n .IP """avrxmega4""" 4
 .el .IP "\f(CWavrxmega4\fR" 4
 .IX Item "avrxmega4"
@@ -23032,6 +23106,22 @@ differ from instructions in the assembler code.
 .Sp
 Relaxing must be turned on if linker stubs are needed, see the
 section on \f(CW\*(C`EIND\*(C'\fR and linker stubs below.
+.IP "\fB\-mrodata\-in\-ram\fR" 4
+.IX Item "-mrodata-in-ram"
+.PD 0
+.IP "\fB\-mno\-rodata\-in\-ram\fR" 4
+.IX Item "-mno-rodata-in-ram"
+.PD
+Locate the \f(CW\*(C`.rodata\*(C'\fR sections for read-only data in \s-1RAM\s0 resp.
+in program memory.
+For most devices, there is no choice and this option acts rather
+like an assertion.
+.Sp
+Since v14 and for the AVR64* and AVR128* devices, \f(CW\*(C`.rodata\*(C'\fR
+is located in flash memory per default, provided the required \s-1GNU\s0 Binutils
+support (\s-1PR31124\s0 (\f(CW\*(C`https://sourceware.org/PR31124\*(C'\fR)) is available.
+In that case, \fB\-mrodata\-in\-ram\fR can be used to return to the old
+layout with \f(CW\*(C`.rodata\*(C'\fR in \s-1RAM.\s0
 .IP "\fB\-mstrict\-X\fR" 4
 .IX Item "-mstrict-X"
 Use address register \f(CW\*(C`X\*(C'\fR in a way proposed by the hardware.  This means
@@ -23451,6 +23541,31 @@ description file, and is currently available for
 \&\f(CW\*(C`avrtiny\*(C'\fR and \f(CW\*(C`avrxmega3\*(C'\fR.  Even more convenient,
 there is no need to use address spaces like \f(CW\*(C`_\|_flash\*(C'\fR or
 features like attribute \f(CW\*(C`progmem\*(C'\fR and \f(CW\*(C`pgm_read_*\*(C'\fR.
+.ie n .IP """_\|_AVR_HAVE_FLMAP_\|_""" 4
+.el .IP "\f(CW_\|_AVR_HAVE_FLMAP_\|_\fR" 4
+.IX Item "__AVR_HAVE_FLMAP__"
+This macro is defined provided the following conditions are met:
+.RS 4
+.ie n .IP "*<The device has the ""NVMCTRL_CTRLB.FLMAP"" bitfield.>" 4
+.el .IP "*<The device has the \f(CWNVMCTRL_CTRLB.FLMAP\fR bitfield.>" 4
+.IX Item "*<The device has the NVMCTRL_CTRLB.FLMAP bitfield.>"
+This applies to the AVR64* and AVR128* devices.
+.IP "*<It's not known at assembler-time which emulation will be used.>" 4
+.IX Item "*<It's not known at assembler-time which emulation will be used.>"
+.RE
+.RS 4
+.Sp
+This implies the compiler was configured with \s-1GNU\s0 Binutils that implement
+\&\s-1PR31124\s0 (\f(CW\*(C`https://sourceware.org/PR31124\*(C'\fR).
+.RE
+.ie n .IP """_\|_AVR_RODATA_IN_RAM_\|_""" 4
+.el .IP "\f(CW_\|_AVR_RODATA_IN_RAM_\|_\fR" 4
+.IX Item "__AVR_RODATA_IN_RAM__"
+This macro is undefined when the code is compiled for a core architecture.
+.Sp
+When the code is compiled for a device, the macro is defined to 1
+when the \f(CW\*(C`.rodata\*(C'\fR sections for read-only data is located in \s-1RAM\s0;
+and defined to 0, otherwise.
 .ie n .IP """_\|_WITH_AVRLIBC_\|_""" 4
 .el .IP "\f(CW_\|_WITH_AVRLIBC_\|_\fR" 4
 .IX Item "__WITH_AVRLIBC__"
@@ -23526,6 +23641,10 @@ files.
 .IX Item "-mn-flash=num"
 Assume that the flash memory has a size of \fInum\fR times 64 KiB.
 This determines which \f(CW\*(C`_\|_flash\f(CIN\f(CW\*(C'\fR address spaces are available.
+.IP "\fB\-mflmap\fR" 4
+.IX Item "-mflmap"
+The device has the \f(CW\*(C`FLMAP\*(C'\fR bit field located in special function
+register \f(CW\*(C`NVMCTRL_CTRLB\*(C'\fR.
 .IP "\fB\-mrmw\fR" 4
 .IX Item "-mrmw"
 Assume that the device supports the Read-Modify-Write
@@ -23535,6 +23654,10 @@ instructions \f(CW\*(C`XCH\*(C'\fR, \f(CW\*(C`LAC\*(C'\fR, \f(CW\*(C`LAS\*(C'\fR
 Assume that \f(CW\*(C`RJMP\*(C'\fR and \f(CW\*(C`RCALL\*(C'\fR can target the whole
 program memory. This option is used for multilib generation and selection
 for the devices from architecture \f(CW\*(C`avrxmega3\*(C'\fR.
+.IP "\fB\-mskip\-bug\fR" 4
+.IX Item "-mskip-bug"
+Generate code without skips (\f(CW\*(C`CPSE\*(C'\fR, \f(CW\*(C`SBRS\*(C'\fR,
+\&\f(CW\*(C`SBRC\*(C'\fR, \f(CW\*(C`SBIS\*(C'\fR, \f(CW\*(C`SBIC\*(C'\fR) over 32\-bit instructions.
 .IP "\fB\-msp8\fR" 4
 .IX Item "-msp8"
 Treat the stack pointer register as an 8\-bit register,
@@ -27834,6 +27957,24 @@ The \fB\-mcompact\-branches=optimal\fR option will cause a delay slot
 branch to be used if one is available in the current \s-1ISA\s0 and the delay
 slot is successfully filled.  If the delay slot is not filled, a compact
 branch will be chosen if one is available.
+.IP "\fB\-mexplicit\-relocs=none\fR" 4
+.IX Item "-mexplicit-relocs=none"
+.PD 0
+.IP "\fB\-mexplicit\-relocs=base\fR" 4
+.IX Item "-mexplicit-relocs=base"
+.IP "\fB\-mexplicit\-relocs=pcrel\fR" 4
+.IX Item "-mexplicit-relocs=pcrel"
+.IP "\fB\-mexplicit\-relocs\fR" 4
+.IX Item "-mexplicit-relocs"
+.IP "\fB\-mno\-explicit\-relocs\fR" 4
+.IX Item "-mno-explicit-relocs"
+.PD
+These options control whether explicit relocs (such as \f(CW%gp_rel\fR) are used.
+The default value depends on the version of \s-1GAS\s0 when \s-1GCC\s0 itself was built.
+.Sp
+The \f(CW\*(C`base\*(C'\fR explicit-relocs support introdunced into \s-1GAS\s0 in 2001.
+The \f(CW\*(C`pcrel\*(C'\fR explicit-relocs support introdunced into \s-1GAS\s0 in 2014,
+which supports \f(CW%pcrel_hi\fR and \f(CW%pcrel_lo\fR.
 .IP "\fB\-mfp\-exceptions\fR" 4
 .IX Item "-mfp-exceptions"
 .PD 0
@@ -29136,11 +29277,500 @@ Generate code for given RISC-V \s-1ISA\s0 (e.g. \fBrv64im\fR).  \s-1ISA\s0 strin
 lower-case.  Examples include \fBrv64i\fR, \fBrv32g\fR, \fBrv32e\fR, and
 \&\fBrv32imaf\fR.
 .Sp
+The syntax of the \s-1ISA\s0 string is defined as follows:
+.RS 4
+.ie n .IP """The string must start with \fBrv32\fP or \fBrv64\fP, followed by""" 4
+.el .IP "\f(CWThe string must start with \f(CBrv32\f(CW or \f(CBrv64\f(CW, followed by\fR" 4
+.IX Item "The string must start with rv32 or rv64, followed by"
+\&\fBi\fR, \fBe\fR, or \fBg\fR, referred to as the base \s-1ISA.\s0
+.ie n .IP """The subsequent part of the string is a list of extension names. Extension""" 4
+.el .IP "\f(CWThe subsequent part of the string is a list of extension names. Extension\fR" 4
+.IX Item "The subsequent part of the string is a list of extension names. Extension"
+names can be categorized as multi-letter (e.g. \fBzba\fR) and single-letter
+(e.g. \fBv\fR). Single-letter extensions can appear consecutively,
+but multi-letter extensions must be separated by underscores.
+.ie n .IP """An underscore can appear anywhere after the base ISA. It has no specific""" 4
+.el .IP "\f(CWAn underscore can appear anywhere after the base ISA. It has no specific\fR" 4
+.IX Item "An underscore can appear anywhere after the base ISA. It has no specific"
+effect but is used to improve readability and can act as a separator.
+.ie n .IP """Extension names may include an optional version number, following the""" 4
+.el .IP "\f(CWExtension names may include an optional version number, following the\fR" 4
+.IX Item "Extension names may include an optional version number, following the"
+syntax \fB<major>p<minor>\fR or \fB<major>\fR, (e.g. \fBm2p1\fR or
+\&\fBm2\fR).
+.RE
+.RS 4
+.Sp
+Supported extension are listed below:
+.IP "\fIExtension Name\fR : \fISupported Version\fR : \fIDescription\fR" 4
+.IX Item "Extension Name : Supported Version : Description"
+.PD 0
+.IP "i" 4
+.IX Item "i"
+.PD
+\&\f(CW@tab\fR 2.0, 2.1
+\&\f(CW@tab\fR Base integer extension.
+.IP "e" 4
+.IX Item "e"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Reduced base integer extension.
+.IP "g" 4
+.IX Item "g"
+\&\f(CW@tab\fR \-
+\&\f(CW@tab\fR General-purpose computing base extension, \fBg\fR will expand to
+\&\fBi\fR, \fBm\fR, \fBa\fR, \fBf\fR, \fBd\fR, \fBzicsr\fR and
+\&\fBzifencei\fR.
+.IP "m" 4
+.IX Item "m"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Integer multiplication and division extension.
+.IP "a" 4
+.IX Item "a"
+\&\f(CW@tab\fR 2.0, 2.1
+\&\f(CW@tab\fR Atomic extension.
+.IP "f" 4
+.IX Item "f"
+\&\f(CW@tab\fR 2.0, 2.2
+\&\f(CW@tab\fR Single-precision floating-point extension.
+.IP "d" 4
+.IX Item "d"
+\&\f(CW@tab\fR 2.0, 2.2
+\&\f(CW@tab\fR Double-precision floating-point extension.
+.IP "c" 4
+.IX Item "c"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Compressed extension.
+.IP "h" 4
+.IX Item "h"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Hypervisor extension.
+.IP "v" 4
+.IX Item "v"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extension.
+.IP "zicsr" 4
+.IX Item "zicsr"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Control and status register access extension.
+.IP "zifencei" 4
+.IX Item "zifencei"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Instruction-fetch fence extension.
+.IP "zicond" 4
+.IX Item "zicond"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Integer conditional operations extension.
+.IP "zawrs" 4
+.IX Item "zawrs"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Wait-on-reservation-set extension.
+.IP "zba" 4
+.IX Item "zba"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Address calculation extension.
+.IP "zbb" 4
+.IX Item "zbb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Basic bit manipulation extension.
+.IP "zbc" 4
+.IX Item "zbc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Carry-less multiplication extension.
+.IP "zbs" 4
+.IX Item "zbs"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Single-bit operation extension.
+.IP "zfinx" 4
+.IX Item "zfinx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Single-precision floating-point in integer registers extension.
+.IP "zdinx" 4
+.IX Item "zdinx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Double-precision floating-point in integer registers extension.
+.IP "zhinx" 4
+.IX Item "zhinx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Half-precision floating-point in integer registers extension.
+.IP "zhinxmin" 4
+.IX Item "zhinxmin"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimal half-precision floating-point in integer registers extension.
+.IP "zbkb" 4
+.IX Item "zbkb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cryptography bit-manipulation extension.
+.IP "zbkc" 4
+.IX Item "zbkc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cryptography carry-less multiply extension.
+.IP "zbkx" 4
+.IX Item "zbkx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cryptography crossbar permutation extension.
+.IP "zkne" 4
+.IX Item "zkne"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1AES\s0 Encryption extension.
+.IP "zknd" 4
+.IX Item "zknd"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1AES\s0 Decryption extension.
+.IP "zknh" 4
+.IX Item "zknh"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Hash function extension.
+.IP "zkr" 4
+.IX Item "zkr"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Entropy source extension.
+.IP "zksed" 4
+.IX Item "zksed"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1SM4\s0 block cipher extension.
+.IP "zksh" 4
+.IX Item "zksh"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1SM3\s0 hash function extension.
+.IP "zkt" 4
+.IX Item "zkt"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Data independent execution latency extension.
+.IP "zk" 4
+.IX Item "zk"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Standard scalar cryptography extension.
+.IP "zkn" 4
+.IX Item "zkn"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1NIST\s0 algorithm suite extension.
+.IP "zks" 4
+.IX Item "zks"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR ShangMi algorithm suite extension.
+.IP "zihintntl" 4
+.IX Item "zihintntl"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Non-temporal locality hints extension.
+.IP "zihintpause" 4
+.IX Item "zihintpause"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Pause hint extension.
+.IP "zicboz" 4
+.IX Item "zicboz"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cache-block zero extension.
+.IP "zicbom" 4
+.IX Item "zicbom"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cache-block management extension.
+.IP "zicbop" 4
+.IX Item "zicbop"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Cache-block prefetch extension.
+.IP "zicntr" 4
+.IX Item "zicntr"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Standard extension for base counters and timers.
+.IP "zihpm" 4
+.IX Item "zihpm"
+\&\f(CW@tab\fR 2.0
+\&\f(CW@tab\fR Standard extension for hardware performance counters.
+.IP "ztso" 4
+.IX Item "ztso"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Total store ordering extension.
+.IP "zve32x" 4
+.IX Item "zve32x"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extensions for embedded processors.
+.IP "zve32f" 4
+.IX Item "zve32f"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extensions for embedded processors.
+.IP "zve64x" 4
+.IX Item "zve64x"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extensions for embedded processors.
+.IP "zve64f" 4
+.IX Item "zve64f"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extensions for embedded processors.
+.IP "zve64d" 4
+.IX Item "zve64d"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector extensions for embedded processors.
+.IP "zvl32b" 4
+.IX Item "zvl32b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl64b" 4
+.IX Item "zvl64b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl128b" 4
+.IX Item "zvl128b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl256b" 4
+.IX Item "zvl256b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl512b" 4
+.IX Item "zvl512b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl1024b" 4
+.IX Item "zvl1024b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl2048b" 4
+.IX Item "zvl2048b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvl4096b" 4
+.IX Item "zvl4096b"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimum vector length standard extensions
+.IP "zvbb" 4
+.IX Item "zvbb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector basic bit-manipulation extension.
+.IP "zvbc" 4
+.IX Item "zvbc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector carryless multiplication extension.
+.IP "zvkb" 4
+.IX Item "zvkb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector cryptography bit-manipulation extension.
+.IP "zvkg" 4
+.IX Item "zvkg"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1GCM/GMAC\s0 extension.
+.IP "zvkned" 4
+.IX Item "zvkned"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1AES\s0 block cipher extension.
+.IP "zvknha" 4
+.IX Item "zvknha"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1SHA\-2\s0 secure hash extension.
+.IP "zvknhb" 4
+.IX Item "zvknhb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1SHA\-2\s0 secure hash extension.
+.IP "zvksed" 4
+.IX Item "zvksed"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1SM4\s0 Block Cipher extension.
+.IP "zvksh" 4
+.IX Item "zvksh"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1SM3\s0 Secure Hash extension.
+.IP "zvkn" 4
+.IX Item "zvkn"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1NIST\s0 Algorithm Suite extension, \fBzvkn\fR will expand to
+\&\fBzvkned\fR, \fBzvknhb\fR, \fBzvkb\fR and \fBzvkt\fR.
+.IP "zvknc" 4
+.IX Item "zvknc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1NIST\s0 Algorithm Suite with carryless multiply extension, \fBzvknc\fR
+will expand to \fBzvkn\fR and \fBzvbc\fR.
+.IP "zvkng" 4
+.IX Item "zvkng"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1NIST\s0 Algorithm Suite with \s-1GCM\s0 extension, \fBzvkng\fR will expand
+to \fBzvkn\fR and \fBzvkg\fR.
+.IP "zvks" 4
+.IX Item "zvks"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector ShangMi algorithm suite extension, \fBzvks\fR will expand
+to \fBzvksed\fR, \fBzvksh\fR, \fBzvkb\fR and \fBzvkt\fR.
+.IP "zvksc" 4
+.IX Item "zvksc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector ShangMi algorithm suite with carryless multiplication extension,
+\&\fBzvksc\fR will expand to \fBzvks\fR and \fBzvbc\fR.
+.IP "zvksg" 4
+.IX Item "zvksg"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector ShangMi algorithm suite with \s-1GCM\s0 extension, \fBzvksg\fR will expand
+to \fBzvks\fR and \fBzvkg\fR.
+.IP "zvkt" 4
+.IX Item "zvkt"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector data independent execution latency extension.
+.IP "zfh" 4
+.IX Item "zfh"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Half-precision floating-point extension.
+.IP "zfhmin" 4
+.IX Item "zfhmin"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Minimal half-precision floating-point extension.
+.IP "zvfh" 4
+.IX Item "zvfh"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector half-precision floating-point extension.
+.IP "zvfhmin" 4
+.IX Item "zvfhmin"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector minimal half-precision floating-point extension.
+.IP "zvfbfmin" 4
+.IX Item "zvfbfmin"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Vector \s-1BF16\s0 converts extension.
+.IP "zfa" 4
+.IX Item "zfa"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Additional floating-point extension.
+.IP "zmmul" 4
+.IX Item "zmmul"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Integer multiplication extension.
+.IP "zca" 4
+.IX Item "zca"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Integer compressed instruction extension.
+.IP "zcf" 4
+.IX Item "zcf"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Compressed single-precision floating point loads and stores extension.
+.IP "zcd" 4
+.IX Item "zcd"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Compressed double-precision floating point loads and stores extension.
+.IP "zcb" 4
+.IX Item "zcb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Simple compressed instruction extension.
+.IP "zce" 4
+.IX Item "zce"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Compressed instruction extensions for embedded processors.
+.IP "zcmp" 4
+.IX Item "zcmp"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Compressed push pop extension.
+.IP "zcmt" 4
+.IX Item "zcmt"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Table jump instruction extension.
+.IP "smaia" 4
+.IX Item "smaia"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Advanced interrupt architecture extension.
+.IP "smepmp" 4
+.IX Item "smepmp"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1PMP\s0 Enhancements for memory access and execution prevention on Machine mode.
+.IP "smstateen" 4
+.IX Item "smstateen"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR State enable extension.
+.IP "ssaia" 4
+.IX Item "ssaia"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Advanced interrupt architecture extension for supervisor-mode.
+.IP "sscofpmf" 4
+.IX Item "sscofpmf"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Count overflow & filtering extension.
+.IP "ssstateen" 4
+.IX Item "ssstateen"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR State-enable extension for supervisor-mode.
+.IP "sstc" 4
+.IX Item "sstc"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Supervisor-mode timer interrupts extension.
+.IP "svinval" 4
+.IX Item "svinval"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Fine-grained address-translation cache invalidation extension.
+.IP "svnapot" 4
+.IX Item "svnapot"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR \s-1NAPOT\s0 translation contiguity extension.
+.IP "svpbmt" 4
+.IX Item "svpbmt"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Page-based memory types extension.
+.IP "xcvmac" 4
+.IX Item "xcvmac"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Core-V multiply-accumulate extension.
+.IP "xcvalu" 4
+.IX Item "xcvalu"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Core-V miscellaneous \s-1ALU\s0 extension.
+.IP "xcvelw" 4
+.IX Item "xcvelw"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Core-V event load word extension.
+.IP "xtheadba" 4
+.IX Item "xtheadba"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head address calculation extension.
+.IP "xtheadbb" 4
+.IX Item "xtheadbb"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head basic bit-manipulation extension.
+.IP "xtheadbs" 4
+.IX Item "xtheadbs"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head single-bit instructions extension.
+.IP "xtheadcmo" 4
+.IX Item "xtheadcmo"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head cache management operations extension.
+.IP "xtheadcondmov" 4
+.IX Item "xtheadcondmov"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head conditional move extension.
+.IP "xtheadfmemidx" 4
+.IX Item "xtheadfmemidx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head indexed memory operations for floating-point registers extension.
+.IP "xtheadfmv" 4
+.IX Item "xtheadfmv"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head double floating-point high-bit data transmission extension.
+.IP "xtheadint" 4
+.IX Item "xtheadint"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head acceleration interruption extension.
+.IP "xtheadmac" 4
+.IX Item "xtheadmac"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head multiply-accumulate extension.
+.IP "xtheadmemidx" 4
+.IX Item "xtheadmemidx"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head indexed memory operation extension.
+.IP "xtheadmempair" 4
+.IX Item "xtheadmempair"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head two-GPR memory operation extension.
+.IP "xtheadsync" 4
+.IX Item "xtheadsync"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR T\-head multi-core synchronization extension.
+.IP "xventanacondops" 4
+.IX Item "xventanacondops"
+\&\f(CW@tab\fR 1.0
+\&\f(CW@tab\fR Ventana integer conditional operations extension.
+.RE
+.RS 4
+.Sp
 When \fB\-march=\fR is not specified, use the setting from \fB\-mcpu\fR.
 .Sp
 If both \fB\-march\fR and \fB\-mcpu=\fR are not specified, the default for
 this argument is system dependent, users who want a specific architecture
 extensions should specify one explicitly.
+.RE
 .IP "\fB\-mcpu=\fR\fIprocessor-string\fR" 4
 .IX Item "-mcpu=processor-string"
 Use architecture of and optimize the output for the given processor, specified
